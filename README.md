@@ -27,7 +27,7 @@ Request Type: GET
 
 3.Get transaction with respect to transaction ID
 
-URL: http://localhost:8080/assignment/transactionSummaryByManufacturingCity/{last_n_days}
+URL: http://localhost:8000/assignment/transactionSummaryByManufacturingCity/{last_n_days}
 
 Request Type: GET
 
