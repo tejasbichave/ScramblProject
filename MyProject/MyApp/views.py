@@ -3,10 +3,11 @@ from django.http.response import HttpResponse
 from bson import json_util
 from django.views.decorators.csrf import csrf_exempt
 import csv
+import os
 from datetime import datetime, timedelta
 
 ProductReferenceFile = "./ProductDetails/ProductReference.csv"
-TransactionInfoFile = "./TransactionInfo/transaction_20190207.csv"
+TransactionInfoFile = "./TransactionInfo"
 
 @csrf_exempt
 def getTransaction(request,id):
@@ -150,17 +151,26 @@ def response(msg, status_code=200):
         return response("Error in response obj.", 404)
 
 def readCSV(filename):
-    # initializing the titles and rows list
-    fields = []
     rows = []
+    if filename.endswith(".csv"):
 
-    # reading csv file
-    with open(filename, 'r') as csvfile:
-        # creating a csv reader object
-        csvreader = csv.reader(csvfile)
-        for row in csvreader:
-            rows.append(row)
-    return rows
+        # reading csv file
+        with open(filename, 'r') as csvfile:
+            # creating a csv reader object
+            csvreader = csv.reader(csvfile)
+            for row in csvreader:
+                rows.append(row)
+        return rows
+    else:
+        for root, dirs, files in os.walk(filename):
+            for file in files:
+                if file.endswith(".csv"):
+                    with open(filename+"//"+file, 'r') as csvfile:
+                        csvreader = csv.reader(csvfile)
+                        for row in csvreader:
+                            rows.append(row)
+            return rows
+
 
 def calculateDateRange(days):
 
